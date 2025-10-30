@@ -9,7 +9,7 @@ public class Blackjack {
     static final int NUM_DECKS = 2;
 
     // two decks so 8 of each card
-    static final int DECK_INIT_COUNTS = 8;
+    static final int DECK_INIT_COUNTS = 4 * NUM_DECKS;
 
     int[] deckCardCounts;
     ArrayList<Integer> dealerHand;
@@ -100,5 +100,9 @@ public class Blackjack {
     int getRandomCard(){
         int card = rand.nextInt(cardsInDeck);
         return card;
+    }
+
+    void resetDeck(){
+
     }
 }
