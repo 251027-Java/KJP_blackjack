@@ -57,6 +57,7 @@ public class Blackjack {
 
         do {
             userBet = promptBet();
+            userBalance -= userBet;
 
             // display the player's and dealer's current hand
             display();
@@ -70,7 +71,33 @@ public class Blackjack {
     }
 
     int promptBet() {
-        return 0;
+        int bet = -1;
+        boolean done = false;
+
+        while (!done) {
+            try {
+                System.out.printf("Balance $%d | Enter a bet: ", userBalance);
+                bet = Integer.parseInt(in.nextLine());
+
+                if (isValidBet(bet)) {
+                    done = true;
+                } else {
+                    promptInvalidBet();
+                }
+            } catch (Exception e) {
+                promptInvalidBet();
+            }
+        }
+
+        return bet;
+    }
+
+    void promptInvalidBet() {
+        System.out.println("🚫 Invalid bet. Try again.");
+    }
+
+    boolean isValidBet(int bet) {
+        return bet >= 1 && bet <= userBalance;
     }
 
     boolean promptHitStand() {
