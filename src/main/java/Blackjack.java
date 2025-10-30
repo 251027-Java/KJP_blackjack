@@ -6,7 +6,7 @@ public class Blackjack {
     static final int NUM_DECKS = 2;
 
     // two decks so 8 of each card
-    static final int DECK_INIT_COUNTS = 8;
+    static final int DECK_INIT_COUNTS = 4 * NUM_DECKS;
 
     int[] deckCardCounts;
     ArrayList<Integer> dealerHand;
@@ -65,7 +65,21 @@ public class Blackjack {
             boolean showDealer = false;
             display(showDealer);
 
+            int playerTotal = 0;
+            int dealerTotal = handTotal(dealerHand);
 
+            if (playerTotal >= 0) {
+                while (dealerTotal <= DEALER_MAX_LIMIT) {
+                    int card = getRandomCard();
+                    dealerHand.add(card);
+                    dealerTotal = handTotal(dealerHand);
+                }
+            }
+
+            updateAndDisplayGameResult(playerTotal, dealerTotal);
+
+            dealerHand = new ArrayList<>();
+            playerHand = new ArrayList<>();
         } while (promptPlayAgain());
 
         in.close();
@@ -157,8 +171,78 @@ public class Blackjack {
     2-10 - 2-10
     11-13 - Jack, Queen, King
      */
-    int getRandomCard() {
-        int card = rand.nextInt(cardsInDeck);
+
+    int getRandomCard(){
+        if (cardsInDeck == 0) resetDeck();
+
+        int card = rand.nextInt(cardsInDeck) + 1;
+        int currCard = 0;
+
+        while (card > 0){
+            currCard++;
+            card -= deckCardCounts[currCard];
+        }
+        deckCardCounts[currCard] -= 1;
+
         return card;
+    }
+
+    void resetDeck(){
+        Arrays.fill(deckCardCounts, DECK_INIT_COUNTS);
+        cardsInDeck = 52 * NUM_DECKS;
+
+        for (int i : dealerHand){
+            cardsInDeck--;
+            deckCardCounts[i]--;
+        }
+
+        for (int i : playerHand){
+            cardsInDeck--;
+            deckCardCounts[i]--;
+        }
+    }
+
+    // return -1 if busted hand
+    int handTotal(ArrayList<Integer> hand){
+        int aces = 0;
+        int nonAcesTotal = 0;
+        for (int i : hand){
+            if (i == 1) aces++;
+            else nonAcesTotal += Math.min(10, i);
+        }
+
+        if (nonAcesTotal == 0 && aces == 2) return 21;
+
+        int total = nonAcesTotal;
+        if (aces > 0){
+            total += aces;
+
+            if (total <= 11) aces += 10; //one of the aces has a value of 11 instead of 1
+        }
+
+        if (total > 21) return -1;
+        return total;
+    }
+
+    void updateAndDisplayGameResult(int playerTotal, int dealerTotal){
+        if (playerTotal < 0) IO.println("Your hand was busted!");
+        else IO.println("Your total: " + playerTotal);
+
+        if (dealerTotal < 0) IO.println("The dealer's hand was busted!");
+        else IO.println("Dealer total: " + dealerTotal);
+
+        if (playerTotal < dealerTotal) {
+            IO.println("You lost!");
+            userBalance -= userBet;
+        }
+        else if (playerTotal > dealerTotal) {
+            IO.println("You won!");
+            userBalance += userBet;
+        }
+        else {
+            IO.println("You tied!");
+        }
+
+        IO.println();
     }
 }
