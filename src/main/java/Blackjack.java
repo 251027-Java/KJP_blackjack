@@ -1,35 +1,87 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Blackjack {
-    static final int CARD_COUNT = 13;
+    static final int CARD_COUNT = 14;
+    static final int DEALER_MAX_LIMIT = 16;
+
+    // two decks so 8 of each card
     static final int DECK_INIT_COUNTS = 8;
-    static final int DEALER_MAX_LIMIT = 17;
+
+    int[] deckCardCounts;
+    ArrayList<Integer> dealerHand;
+    ArrayList<Integer> playerHand;
+    int userBalance;
+    int userBet;
+    Scanner in;
 
 
     public static void main(String[] args) {
-        int[] deckCardCounts = new int[CARD_COUNT];
+        new Blackjack().start();
+    }
+
+    public Blackjack() {
+        deckCardCounts = new int[CARD_COUNT];
+        dealerHand = new ArrayList<>();
+        playerHand = new ArrayList<>();
+        userBalance = 1000;
+        in = new Scanner(System.in);
         Arrays.fill(deckCardCounts, DECK_INIT_COUNTS);
+    }
 
-        int userBalance = 1000;
-
+    public void start() {
         /*
         prompt user bet
 
         game starts
         - dealer shows one card (has two)
-        - user has two cards
+        - user initially has two cards
             user has hit or stand options
 
             hit - they get a new card
             stand - dealer shows card
-
+            ---
             dealer's turn - hit until 17
             when deck runs out of cards
 
         ace value - assume 11, if total > 21, value is 1
         blackjack has to be a one ace and another 10-ace
 
-        TODO account for deck runs out of cards
+        - add back the cards to the deck that are currently not in
+         either the dealers hand or player's hand
+
+         random selection of cards - based on real life
+         pick random card based on total of actual cards in cards
          */
+
+        do {
+            userBet = promptBet();
+
+            // display the player's and dealer's current hand
+            display();
+
+        } while (promptPlayAgain());
+
+        in.close();
+    }
+
+    void display() {
+    }
+
+    int promptBet() {
+        return 0;
+    }
+
+    boolean promptHitStand() {
+        // return true if hit, false if stand
+        // get user response
+        // validate response
+        // etc
+        return false;
+    }
+
+    boolean promptPlayAgain() {
+        return false;
     }
 }
