@@ -39,25 +39,27 @@ public class Blackjack {
         userBet = promptBet();
 
         for (int i = 0; i < 2; i++) {
-            int temp = getRandomCard();
+            int temp = rand.nextInt(13) + 1;
             deckCardCounts[temp]--;
             dealerHand.add(temp);
 
-            temp =  getRandomCard();
+            temp = rand.nextInt(13) + 1;
             deckCardCounts[temp]--;
             playerHand.add(temp);
         }
 
-        int userIn = in.nextInt();
+        IO.println(dealerHand.get(0) + " " + dealerHand.get(1));
+        IO.println(playerHand.get(0) + " " + playerHand.get(1));
         do {
             int temp;
 
             display(false);
 
+            int userIn = in.nextInt();
             switch(userIn) {
                 // hit
                 case 1:
-                    playerHand.add(temp = getRandomCard());
+                    playerHand.add(temp = rand.nextInt(13) + 1);
 
                     int sum = 0;
                     for (int i = 0; i < playerHand.size(); i++) sum += playerHand.get(i);
