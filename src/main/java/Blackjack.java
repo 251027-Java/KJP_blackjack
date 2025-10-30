@@ -34,53 +34,6 @@ public class Blackjack {
 
     public void start() {
 
-        boolean playerTurn = true;
-        boolean playerBust = false;
-        userBet = promptBet();
-
-        for (int i = 0; i < 2; i++) {
-            int temp = rand.nextInt(13) + 1;
-            deckCardCounts[temp]--;
-            dealerHand.add(temp);
-
-            temp = rand.nextInt(13) + 1;
-            deckCardCounts[temp]--;
-            playerHand.add(temp);
-        }
-
-        IO.println(dealerHand.get(0) + " " + dealerHand.get(1));
-        IO.println(playerHand.get(0) + " " + playerHand.get(1));
-        do {
-            int temp;
-
-            display(false);
-
-            int userIn = in.nextInt();
-            switch(userIn) {
-                // hit
-                case 1:
-                    playerHand.add(temp = rand.nextInt(13) + 1);
-
-                    int sum = 0;
-                    for (int i = 0; i < playerHand.size(); i++) sum += playerHand.get(i);
-
-                    if (sum > 21) {
-                        playerTurn = false;
-                        playerBust = true;
-                    }
-                    break;
-                // stand
-                case 2:
-                    playerTurn = false;
-                    break;
-                // int out of scope
-                default:
-                    IO.println("User input is not one of the options. Try again.");
-            }
-        } while (playerTurn);
-
-
-
         /*
         prompt user bet
 
@@ -110,16 +63,56 @@ public class Blackjack {
         do {
             userBet = promptBet();
             userBalance -= userBet;
+            boolean playerTurn = true;
+            boolean playerBust = false;
+            int sum = 0;
 
             // display the player's and dealer's current hand
+
+            for (int i = 0; i < 2; i++) {
+                int temp = getRandomCard();
+                dealerHand.add(temp);
+
+                temp = getRandomCard();
+                playerHand.add(temp);
+            }
+
+            do {
+                int temp;
+
+                display(false);
+
+                int userIn = in.nextInt();
+                switch(userIn) {
+                    // hit
+                    case 1:
+                        playerHand.add(getRandomCard());
+
+                        sum = handTotal(playerHand);
+
+                        if (sum == -1) {
+                            IO.println("BUSTED");
+                            playerTurn = false;
+                            playerBust = true;
+                        }
+                        break;
+                    // stand
+                    case 2:
+                        playerTurn = false;
+                        break;
+                    // int out of scope
+                    default:
+                        IO.println("User input is not one of the options. Try again.");
+                }
+            } while (playerTurn);
+
             boolean showDealer = false;
             display(showDealer);
 
-            int playerTotal = 0;
             int dealerTotal = handTotal(dealerHand);
 
 
-            if (playerTotal >= 0) {
+            if (sum >= 0) {
                 while (dealerTotal <= DEALER_MAX_LIMIT) {
                     int card = getRandomCard();
                     dealerHand.add(card);
@@ -127,7 +120,7 @@ public class Blackjack {
                 }
             }
 
-            updateAndDisplayGameResult(playerTotal, dealerTotal);
+            updateAndDisplayGameResult(sum, dealerTotal);
 
             dealerHand = new ArrayList<>();
             playerHand = new ArrayList<>();
@@ -235,7 +228,7 @@ public class Blackjack {
         }
         deckCardCounts[currCard] -= 1;
 
-        return card;
+        return currCard;
     }
 
     void resetDeck(){
