@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Blackjack {
     static final int CARD_COUNT = 14;
@@ -65,7 +62,8 @@ public class Blackjack {
             userBalance -= userBet;
 
             // display the player's and dealer's current hand
-            display();
+            boolean showDealer = false;
+            display(showDealer);
 
             int playerTotal = 0;
             int dealerTotal = handTotal(dealerHand);
@@ -87,7 +85,42 @@ public class Blackjack {
         in.close();
     }
 
-    void display() {
+    String resolveCardIndex(int index) {
+        return switch (index) {
+            case 1 -> "A";
+            case 11 -> "J";
+            case 12 -> "Q";
+            case 13 -> "K";
+            default -> "" + index;
+        };
+    }
+
+    String cardsToString(List<Integer> cards, boolean hideFirst) {
+        StringBuilder res = new StringBuilder();
+
+        for (int i = 0; i < cards.size(); i++) {
+            if (i == 0 && hideFirst) {
+                res.append("* ");
+            } else {
+                res.append(resolveCardIndex(cards.get(i))).append(' ');
+            }
+        }
+
+        return res.toString().trim();
+    }
+
+    void display(boolean showDealer) {
+        String dealerStr = cardsToString(dealerHand, showDealer);
+        String playerStr = cardsToString(playerHand, false);
+
+        String res = String.format("""
+                
+                %1$10s 🎩️: %3$s
+                %2$10s 🙂: %4$s
+                
+                """, "DEALER", "YOU", dealerStr, playerStr);
+
+        System.out.println(res);
     }
 
     int promptBet() {
@@ -138,6 +171,7 @@ public class Blackjack {
     2-10 - 2-10
     11-13 - Jack, Queen, King
      */
+
     int getRandomCard(){
         if (cardsInDeck == 0) resetDeck();
 
