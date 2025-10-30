@@ -73,7 +73,22 @@ public class Blackjack {
         in.close();
     }
 
+    String resolveCardIndex(int index) {
+        return switch (index) {
+            case 1 -> "A";
+            case 11 -> "J";
+            case 12 -> "Q";
+            case 13 -> "K";
+            default -> "" + index;
+        };
+    }
+
     void display() {
+        String res = """
+                DEALER: 
+                PLAYER:                 
+                """;
+        System.out.println(res);
     }
 
     int promptBet() {
@@ -124,7 +139,7 @@ public class Blackjack {
     2-10 - 2-10
     11-13 - Jack, Queen, King
      */
-    int getRandomCard(){
+    int getRandomCard() {
         int card = rand.nextInt(cardsInDeck);
         return card;
     }
