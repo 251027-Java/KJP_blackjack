@@ -112,8 +112,8 @@ public class Blackjack {
             display(false);
 
             int dealerTotal = handTotal(dealerHand);
-            
-            IO.println("Dealer's turn! Their current total is "+dealerTotal+".");
+
+            IO.println("Dealer's turn! Their current total is " + dealerTotal + ".");
             if (sum >= 0) {
                 while (dealerTotal <= DEALER_MAX_LIMIT && dealerTotal != -1) {
                     int card = getRandomCard();
@@ -210,8 +210,9 @@ public class Blackjack {
 
             } catch (InputMismatchException e) {
                 System.err.println("Wrong input! Try again.");
-                in.nextLine();
                 continue;
+            } finally {
+                in.nextLine();
             }
 
             inpNull = true;
