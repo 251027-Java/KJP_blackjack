@@ -220,7 +220,23 @@ public class Blackjack {
     }
 
     boolean promptPlayAgain() {
-        return false;
+        boolean res = false;
+
+        if (userBalance <= 0) {
+            System.out.println("You have no balance remaining. Goodbye \uD83D\uDC4B");
+            return false;
+        }
+
+        // default answer is "no" to not play again
+        // only continue to play if and only if the user enters 'y' or 'Y'
+        System.out.print("Would you like to play again? y/[N] ");
+        String ans = in.nextLine().trim();
+
+        if (ans.equalsIgnoreCase("y")) {
+            res = true;
+        }
+
+        return res;
     }
 
     /*
@@ -230,13 +246,13 @@ public class Blackjack {
     11-13 - Jack, Queen, King
      */
 
-    int getRandomCard(){
+    int getRandomCard() {
         if (cardsInDeck == 0) resetDeck();
 
         int card = rand.nextInt(cardsInDeck) + 1;
         int currCard = 0;
 
-        while (card > 0){
+        while (card > 0) {
             currCard++;
             card -= deckCardCounts[currCard];
         }
@@ -247,26 +263,26 @@ public class Blackjack {
         return currCard;
     }
 
-    void resetDeck(){
+    void resetDeck() {
         Arrays.fill(deckCardCounts, DECK_INIT_COUNTS);
         cardsInDeck = 52 * NUM_DECKS;
 
-        for (int i : dealerHand){
+        for (int i : dealerHand) {
             cardsInDeck--;
             deckCardCounts[i]--;
         }
 
-        for (int i : playerHand){
+        for (int i : playerHand) {
             cardsInDeck--;
             deckCardCounts[i]--;
         }
     }
 
     // return -1 if busted hand
-    int handTotal(ArrayList<Integer> hand){
+    int handTotal(ArrayList<Integer> hand) {
         int aces = 0;
         int nonAcesTotal = 0;
-        for (int i : hand){
+        for (int i : hand) {
             if (i == 1) aces++;
             else nonAcesTotal += Math.min(10, i);
         }
@@ -274,7 +290,7 @@ public class Blackjack {
         if (nonAcesTotal == 0 && aces == 2) return 21;
 
         int total = nonAcesTotal;
-        if (aces > 0){
+        if (aces > 0) {
             total += aces;
 
             if (total <= 11) aces += 10; //one of the aces has a value of 11 instead of 1
@@ -284,7 +300,7 @@ public class Blackjack {
         return total;
     }
 
-    void updateAndDisplayGameResult(int playerTotal, int dealerTotal){
+    void updateAndDisplayGameResult(int playerTotal, int dealerTotal) {
         if (playerTotal < 0) IO.println("Your hand was busted!");
         else IO.println("Your total: " + playerTotal);
 
@@ -294,12 +310,10 @@ public class Blackjack {
         if (playerTotal < dealerTotal) {
             IO.println("You lost!");
             userBalance -= userBet;
-        }
-        else if (playerTotal > dealerTotal) {
+        } else if (playerTotal > dealerTotal) {
             IO.println("You won!");
             userBalance += userBet;
-        }
-        else {
+        } else {
             IO.println("You tied!");
         }
 
