@@ -81,8 +81,22 @@ public class Blackjack {
                 int temp;
 
                 display(false);
+                IO.println("1 - HIT   2 - STAND");
 
-                int userIn = in.nextInt();
+                boolean inpNull = false;
+                int userIn = 0;
+                while (!inpNull) {
+                    try {
+                        userIn = in.nextInt();
+
+                    } catch(InputMismatchException e) {
+                        System.err.println("Wrong input! Try again.");
+                        in.nextLine();
+                        continue;
+                    }
+
+                    inpNull = true;
+                }
                 switch(userIn) {
                     // hit
                     case 1:
