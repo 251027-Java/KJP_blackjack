@@ -62,7 +62,6 @@ public class Blackjack {
 
         do {
             userBet = promptBet();
-            userBalance -= userBet;
             boolean playerTurn = true;
             boolean playerBust = false;
             int sum = 0;
@@ -245,16 +244,13 @@ public class Blackjack {
     int getRandomCard() {
         if (cardsInDeck == 0) resetDeck();
 
-        IO.println("num cards in deck before gen: "+cardsInDeck);
         int card = rand.nextInt(cardsInDeck) + 1;
         int currCard = 0;
-        IO.println("card gen: "+card);
 
         while (card > 0) {
             currCard++;
             card -= deckCardCounts[currCard];
         }
-        IO.println("card actually gen: "+currCard+'\n');
 
         deckCardCounts[currCard]--;
         cardsInDeck--;
