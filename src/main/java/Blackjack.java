@@ -33,7 +33,6 @@ public class Blackjack {
     }
 
     public void start() {
-
         /*
         prompt user bet
 
@@ -64,8 +63,6 @@ public class Blackjack {
             userBet = promptBet();
 
             boolean playerTurn = true;
-            boolean playerBust = false;
-            int sum = 0;
 
             // display the player's and dealer's current hand
 
@@ -77,44 +74,60 @@ public class Blackjack {
                 playerHand.add(temp);
             }
 
-            do {
-                int temp;
+            int sum = handTotal(playerHand);
+            boolean playerBlackjack = false;
 
-                display(true);
-                IO.println("1 - HIT   2 - STAND");
+            if (sum == 21) {
+                IO.println("You got a blackjack!!!");
+                playerBlackjack = true;
+            }
+            else {
+                do {
+                    int temp;
 
-                int userIn = promptHitStand();
+                    display(true);
+                    IO.println("1 - HIT   2 - STAND");
 
-                switch (userIn) {
-                    // hit
-                    case 1:
-                        playerHand.add(getRandomCard());
+                    int userIn = promptHitStand();
 
-                        sum = handTotal(playerHand);
+                    switch (userIn) {
+                        // hit
+                        case 1:
+                            playerHand.add(getRandomCard());
 
-                        if (sum == -1) {
-                            IO.println("BUSTED");
+                            sum = handTotal(playerHand);
+
+                            if (sum == -1) {
+                                IO.println("BUSTED");
+                                playerTurn = false;
+                            } else if (sum == 21) {
+                                IO.println("You reached 21!");
+                                playerTurn = false;
+                            }
+                            break;
+                        // stand
+                        case 2:
                             playerTurn = false;
-                            playerBust = true;
-                        }
-                        break;
-                    // stand
-                    case 2:
-                        playerTurn = false;
-                        sum = handTotal(playerHand);
-                        break;
-                    // int out of scope
-                    default:
-                        IO.println("User input is not one of the options. Try again.");
-                }
-            } while (playerTurn);
-
-            display(false);
+                            sum = handTotal(playerHand);
+                            break;
+                        // int out of scope
+                        default:
+                            IO.println("User input is not one of the options. Try again.");
+                    }
+                } while (playerTurn);
+            }
 
             int dealerTotal = handTotal(dealerHand);
+            boolean dealerBlackjack = false;
 
-            IO.println("Dealer's turn! Their current total is " + dealerTotal + ".");
-            if (sum >= 0) {
+            if (dealerTotal == 21) {
+                IO.println("Dealer got a blackjack!!!");
+                dealerBlackjack = true;
+            }
+
+            if (sum >= 0 && !dealerBlackjack && !playerBlackjack) {
+                IO.println("Dealer's turn! Their current total is " + dealerTotal + ".");
+
                 while (dealerTotal <= DEALER_MAX_LIMIT && dealerTotal != -1) {
                     int card = getRandomCard();
                     dealerHand.add(card);
@@ -126,11 +139,15 @@ public class Blackjack {
                         IO.println("Dealer got a: " + dealerHand.getLast() + ".");
                     }
                     dealerTotal = handTotal(dealerHand);
+                    IO.println("Dealer took a card. " + cardsInDeck + " card(s) in the current deck.");
                 }
-            }
-            IO.println("Dealer finished taking cards.\n");
 
-            updateAndDisplayGameResult(sum, dealerTotal);
+                IO.println("Dealer finished taking cards.");
+            }
+
+            display(false);
+
+            updateAndDisplayGameResult(sum, dealerTotal, playerBlackjack, dealerBlackjack);
 
             dealerHand = new ArrayList<>();
             playerHand = new ArrayList<>();
@@ -170,10 +187,9 @@ public class Blackjack {
 
         String res = String.format("""
                 
+                %5$d card(s) in the current deck
                 %1$10s 🎩️: %3$s
                 %2$10s 🙂: %4$s
-                %5$d card(s) in the current deck
-                
                 """, "DEALER", "YOU", dealerStr, playerStr, cardsInDeck);
 
         System.out.println(res);
@@ -243,13 +259,12 @@ public class Blackjack {
         return ans.equalsIgnoreCase("y");
     }
 
-    /*
-    0 - N/A
-    1 - Ace
-    2-10 - 2-10
-    11-13 - Jack, Queen, King
+    /**
+    * 0 - N/A
+    * 1 - Ace
+    * 2-10 - 2-10
+    * 11-13 - Jack, Queen, King
      */
-
     int getRandomCard() {
         if (cardsInDeck == 0) resetDeck();
 
@@ -282,7 +297,7 @@ public class Blackjack {
         }
     }
 
-    // return -1 if busted hand
+    /** return -1 if busted hand */
     int handTotal(ArrayList<Integer> hand) {
         int aces = 0;
         int nonAcesTotal = 0;
@@ -297,24 +312,26 @@ public class Blackjack {
         if (aces > 0) {
             total += aces;
 
-            if (total <= 11) aces += 10; //one of the aces has a value of 11 instead of 1
+            if (total <= 11) total += 10; //one of the aces has a value of 11 instead of 1
         }
 
         if (total > 21) return -1;
         return total;
     }
 
-    void updateAndDisplayGameResult(int playerTotal, int dealerTotal) {
+    void updateAndDisplayGameResult(int playerTotal, int dealerTotal, boolean playerBlackjack, boolean dealerBlackjack) {
         if (playerTotal < 0) IO.println("Your hand was busted!");
+        else if (playerBlackjack) IO.println("You got a blackjack!");
         else IO.println("Your total: " + playerTotal);
 
         if (dealerTotal < 0) IO.println("The dealer's hand was busted!");
+        else if (dealerBlackjack) IO.println("Dealer got a blackjack!");
         else IO.println("Dealer total: " + dealerTotal);
 
-        if (playerTotal < dealerTotal) {
+        if (playerTotal < dealerTotal || dealerBlackjack && !playerBlackjack) {
             IO.println("You lost!");
             userBalance -= userBet;
-        } else if (playerTotal > dealerTotal) {
+        } else if (playerTotal > dealerTotal || playerBlackjack && !dealerBlackjack) {
             IO.println("You won!");
             userBalance += userBet;
         } else {
