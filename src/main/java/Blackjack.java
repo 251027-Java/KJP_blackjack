@@ -83,20 +83,8 @@ public class Blackjack {
                 display(false);
                 IO.println("1 - HIT   2 - STAND");
 
-                boolean inpNull = false;
-                int userIn = 0;
-                while (!inpNull) {
-                    try {
-                        userIn = in.nextInt();
+                int userIn = promptHitStand();
 
-                    } catch(InputMismatchException e) {
-                        System.err.println("Wrong input! Try again.");
-                        in.nextLine();
-                        continue;
-                    }
-
-                    inpNull = true;
-                }
                 switch(userIn) {
                     // hit
                     case 1:
@@ -212,12 +200,23 @@ public class Blackjack {
         return bet >= 1 && bet <= userBalance;
     }
 
-    boolean promptHitStand() {
-        // return true if hit, false if stand
-        // get user response
-        // validate response
-        // etc
-        return false;
+    int promptHitStand() {
+        boolean inpNull = false;
+        int userIn = 0;
+        while (!inpNull) {
+            try {
+                userIn = in.nextInt();
+
+            } catch(InputMismatchException e) {
+                System.err.println("Wrong input! Try again.");
+                in.nextLine();
+                continue;
+            }
+
+            inpNull = true;
+        }
+
+        return userIn;
     }
 
     boolean promptPlayAgain() {
