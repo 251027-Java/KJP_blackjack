@@ -169,9 +169,9 @@ public class Blackjack {
 
         // default answer is "no" to not play again
         // only continue to play if and only if the user enters 'y' or 'Y'
-        System.out.print("Would you like to play again? y/[N] ");
+        System.out.printf("Balance: $%d | Would you like to play again? y/[N] ", userBalance);
         String ans = in.nextLine().trim();
-        
+
         return ans.equalsIgnoreCase("y");
     }
 
