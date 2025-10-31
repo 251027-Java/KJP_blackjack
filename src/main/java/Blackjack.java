@@ -162,8 +162,6 @@ public class Blackjack {
     }
 
     boolean promptPlayAgain() {
-        boolean res = false;
-
         if (userBalance <= 0) {
             System.out.println("You have no balance remaining. Goodbye \uD83D\uDC4B");
             return false;
@@ -173,12 +171,8 @@ public class Blackjack {
         // only continue to play if and only if the user enters 'y' or 'Y'
         System.out.print("Would you like to play again? y/[N] ");
         String ans = in.nextLine().trim();
-
-        if (ans.equalsIgnoreCase("y")) {
-            res = true;
-        }
-
-        return res;
+        
+        return ans.equalsIgnoreCase("y");
     }
 
     /*
