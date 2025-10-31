@@ -133,8 +133,7 @@ public class Blackjack {
                     if (dealerHand.getLast() > 10) {
                         String temp = resolveCardIndex(dealerHand.getLast());
                         IO.println("Dealer got a: " + temp + ".");
-                    }
-                    else {
+                    } else {
                         IO.println("Dealer got a: " + dealerHand.getLast() + ".");
                     }
                     dealerTotal = handTotal(dealerHand);
@@ -164,20 +163,6 @@ public class Blackjack {
             case 13 -> "K";
             default -> "" + index;
         };
-    }
-
-    String cardsToString(List<Integer> cards, boolean hideFirst) {
-        StringBuilder res = new StringBuilder();
-
-        for (int i = 0; i < cards.size(); i++) {
-            if (i == 0 && hideFirst) {
-                res.append("* ");
-            } else {
-                res.append(resolveCardIndex(cards.get(i))).append(' ');
-            }
-        }
-
-        return res.toString().trim();
     }
 
     void display(boolean hideDealer) {
