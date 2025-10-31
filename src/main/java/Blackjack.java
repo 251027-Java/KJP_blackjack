@@ -99,6 +99,7 @@ public class Blackjack {
                     // stand
                     case 2:
                         playerTurn = false;
+                        sum = handTotal(playerHand);
                         break;
                     // int out of scope
                     default:
@@ -111,14 +112,15 @@ public class Blackjack {
 
             int dealerTotal = handTotal(dealerHand);
 
-
+            IO.println("Dealer's turn! Their current total is "+dealerTotal+".");
             if (sum >= 0) {
-                while (dealerTotal <= DEALER_MAX_LIMIT) {
+                while (dealerTotal <= DEALER_MAX_LIMIT && dealerTotal != -1) {
                     int card = getRandomCard();
                     dealerHand.add(card);
                     dealerTotal = handTotal(dealerHand);
                 }
             }
+            IO.println("Dealer finished taking cards.\n");
 
             updateAndDisplayGameResult(sum, dealerTotal);
 
@@ -219,13 +221,16 @@ public class Blackjack {
     int getRandomCard(){
         if (cardsInDeck == 0) resetDeck();
 
+        IO.println("num cards in deck before gen: "+cardsInDeck);
         int card = rand.nextInt(cardsInDeck) + 1;
         int currCard = 0;
+        IO.println("card gen: "+card);
 
         while (card > 0){
             currCard++;
             card -= deckCardCounts[currCard];
         }
+        IO.println("card actually gen: "+currCard+'\n');
 
         deckCardCounts[currCard]--;
         cardsInDeck--;
