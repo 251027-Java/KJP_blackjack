@@ -62,7 +62,7 @@ public class Blackjack {
 
         do {
             userBet = promptBet();
-            userBalance -= userBet;
+
             boolean playerTurn = true;
             boolean playerBust = false;
             int sum = 0;
@@ -101,6 +101,7 @@ public class Blackjack {
                     // stand
                     case 2:
                         playerTurn = false;
+                        sum = handTotal(playerHand);
                         break;
                     // int out of scope
                     default:
@@ -111,15 +112,16 @@ public class Blackjack {
             display(false);
 
             int dealerTotal = handTotal(dealerHand);
-
-
+            
+            IO.println("Dealer's turn! Their current total is "+dealerTotal+".");
             if (sum >= 0) {
-                while (dealerTotal <= DEALER_MAX_LIMIT) {
+                while (dealerTotal <= DEALER_MAX_LIMIT && dealerTotal != -1) {
                     int card = getRandomCard();
                     dealerHand.add(card);
                     dealerTotal = handTotal(dealerHand);
                 }
             }
+            IO.println("Dealer finished taking cards.\n");
 
             updateAndDisplayGameResult(sum, dealerTotal);
 
