@@ -116,8 +116,9 @@ public class Blackjack {
                 
                 %1$10s 🎩️: %3$s
                 %2$10s 🙂: %4$s
+                %5$d card(s) in the current deck
                 
-                """, "DEALER", "YOU", dealerStr, playerStr);
+                """, "DEALER", "YOU", dealerStr, playerStr, cardsInDeck);
 
         System.out.println(res);
     }
