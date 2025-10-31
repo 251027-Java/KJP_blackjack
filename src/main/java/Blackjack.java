@@ -112,8 +112,8 @@ public class Blackjack {
             display(false);
 
             int dealerTotal = handTotal(dealerHand);
-            
-            IO.println("Dealer's turn! Their current total is "+dealerTotal+".");
+
+            IO.println("Dealer's turn! Their current total is " + dealerTotal + ".");
             if (sum >= 0) {
                 while (dealerTotal <= DEALER_MAX_LIMIT && dealerTotal != -1) {
                     int card = getRandomCard();
@@ -129,6 +129,7 @@ public class Blackjack {
             playerHand = new ArrayList<>();
         } while (promptPlayAgain());
 
+        System.out.println("Goodbye \uD83D\uDC4B");
         in.close();
     }
 
@@ -210,8 +211,9 @@ public class Blackjack {
 
             } catch (InputMismatchException e) {
                 System.err.println("Wrong input! Try again.");
-                in.nextLine();
                 continue;
+            } finally {
+                in.nextLine();
             }
 
             inpNull = true;
@@ -222,13 +224,13 @@ public class Blackjack {
 
     boolean promptPlayAgain() {
         if (userBalance <= 0) {
-            System.out.println("You have no balance remaining. Goodbye \uD83D\uDC4B");
+            System.out.println("You have no balance remaining.");
             return false;
         }
 
         // default answer is "no" to not play again
         // only continue to play if and only if the user enters 'y' or 'Y'
-        System.out.printf("Balance: $%d | Would you like to play again? y/[N] ", userBalance);
+        System.out.printf("Balance $%d | Would you like to play again? y/[N] ", userBalance);
         String ans = in.nextLine().trim();
 
         return ans.equalsIgnoreCase("y");
