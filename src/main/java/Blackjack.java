@@ -117,8 +117,6 @@ public class Blackjack {
                 } while (playerTurn);
             }
 
-            display(false);
-
             int dealerTotal = handTotal(dealerHand);
             boolean dealerBlackjack = false;
 
@@ -137,7 +135,7 @@ public class Blackjack {
                     IO.println("Dealer took a card. " + cardsInDeck + " card(s) in the current deck.");
                 }
 
-                IO.println("Dealer finished taking cards.\n");
+                IO.println("Dealer finished taking cards.");
             }
 
             display(false);
@@ -182,10 +180,9 @@ public class Blackjack {
 
         String res = String.format("""
                 
+                %5$d card(s) in the current deck
                 %1$10s 🎩️: %3$s
                 %2$10s 🙂: %4$s
-                %5$d card(s) in the current deck
-                
                 """, "DEALER", "YOU", dealerStr, playerStr, cardsInDeck);
 
         System.out.println(res);
