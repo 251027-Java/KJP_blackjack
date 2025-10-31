@@ -129,6 +129,7 @@ public class Blackjack {
             playerHand = new ArrayList<>();
         } while (promptPlayAgain());
 
+        System.out.println("Goodbye \uD83D\uDC4B");
         in.close();
     }
 
@@ -223,13 +224,13 @@ public class Blackjack {
 
     boolean promptPlayAgain() {
         if (userBalance <= 0) {
-            System.out.println("You have no balance remaining. Goodbye \uD83D\uDC4B");
+            System.out.println("You have no balance remaining.");
             return false;
         }
 
         // default answer is "no" to not play again
         // only continue to play if and only if the user enters 'y' or 'Y'
-        System.out.printf("Balance: $%d | Would you like to play again? y/[N] ", userBalance);
+        System.out.printf("Balance $%d | Would you like to play again? y/[N] ", userBalance);
         String ans = in.nextLine().trim();
 
         return ans.equalsIgnoreCase("y");
