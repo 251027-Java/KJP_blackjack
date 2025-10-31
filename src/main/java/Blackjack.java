@@ -59,7 +59,6 @@ public class Blackjack {
 
         do {
             userBet = promptBet();
-            userBalance -= userBet;
 
             // display the player's and dealer's current hand
             boolean showDealer = false;
