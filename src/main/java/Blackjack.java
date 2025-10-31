@@ -62,6 +62,7 @@ public class Blackjack {
 
         do {
             userBet = promptBet();
+
             boolean playerTurn = true;
             boolean playerBust = false;
             int sum = 0;
@@ -112,7 +113,7 @@ public class Blackjack {
             display(showDealer);
 
             int dealerTotal = handTotal(dealerHand);
-
+            
             IO.println("Dealer's turn! Their current total is "+dealerTotal+".");
             if (sum >= 0) {
                 while (dealerTotal <= DEALER_MAX_LIMIT && dealerTotal != -1) {
