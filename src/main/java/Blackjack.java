@@ -130,6 +130,13 @@ public class Blackjack {
                 while (dealerTotal <= DEALER_MAX_LIMIT && dealerTotal != -1) {
                     int card = getRandomCard();
                     dealerHand.add(card);
+                    if (dealerHand.getLast() > 10) {
+                        String temp = resolveCardIndex(dealerHand.getLast());
+                        IO.println("Dealer got a: " + temp + ".");
+                    }
+                    else {
+                        IO.println("Dealer got a: " + dealerHand.getLast() + ".");
+                    }
                     dealerTotal = handTotal(dealerHand);
                     IO.println("Dealer took a card. " + cardsInDeck + " card(s) in the current deck.");
                 }
