@@ -33,7 +33,6 @@ public class Blackjack {
     }
 
     public void start() {
-
         /*
         prompt user bet
 
@@ -309,7 +308,7 @@ public class Blackjack {
         if (aces > 0) {
             total += aces;
 
-            if (total <= 11) aces += 10; //one of the aces has a value of 11 instead of 1
+            if (total <= 11) total += 10; //one of the aces has a value of 11 instead of 1
         }
 
         if (total > 21) return -1;
