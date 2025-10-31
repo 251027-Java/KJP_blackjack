@@ -109,14 +109,14 @@ public class CardArt {
             """,
     };
 
-    String resolveCardIndex(int index) {
+    static String resolveCardIndex(int index) {
         if (index >= 1 && index < cards.length) {
             return cards[index];
         }
         return cards[0];
     }
 
-    String cardsToString(List<Integer> cards) {
+    static String cardsToString(List<Integer> cards) {
         int lineCount = 5;
 
         StringBuilder[] lines = new StringBuilder[lineCount];
@@ -135,7 +135,7 @@ public class CardArt {
     }
 
     void run() {
-       var s = cardsToString(Arrays.asList(1, 2));
+        var s = cardsToString(Arrays.asList(1, 2, 0));
         System.out.println(s);
     }
 }

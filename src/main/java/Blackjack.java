@@ -80,8 +80,7 @@ public class Blackjack {
             if (sum == 21) {
                 IO.println("You got a blackjack!!!");
                 playerBlackjack = true;
-            }
-            else {
+            } else {
                 do {
                     int temp;
 
@@ -175,15 +174,22 @@ public class Blackjack {
     }
 
     void display(boolean hideDealer) {
-        String dealerStr = cardsToString(dealerHand, hideDealer);
-        String playerStr = cardsToString(playerHand, false);
+        var dealerTemp = new ArrayList<>(dealerHand);
+        if (hideDealer) {
+            dealerTemp.set(0, -1);
+        }
+
+        String dealerStr = CardArt.cardsToString(dealerTemp);
+        String playerStr = CardArt.cardsToString(playerHand);
 
         String res = String.format("""
                 
-                %5$d card(s) in the current deck
-                %1$10s 🎩️: %3$s
-                %2$10s 🙂: %4$s
-                """, "DEALER", "YOU", dealerStr, playerStr, cardsInDeck);
+                %3$d card(s) in the current deck
+                DEALER 🎩️
+                %1$s
+                %2$s
+                YOU 🙂
+                """, dealerStr, playerStr, cardsInDeck);
 
         System.out.println(res);
     }
@@ -253,10 +259,10 @@ public class Blackjack {
     }
 
     /**
-    * 0 - N/A
-    * 1 - Ace
-    * 2-10 - 2-10
-    * 11-13 - Jack, Queen, King
+     * 0 - N/A
+     * 1 - Ace
+     * 2-10 - 2-10
+     * 11-13 - Jack, Queen, King
      */
     int getRandomCard() {
         if (cardsInDeck == 0) resetDeck();
@@ -290,7 +296,9 @@ public class Blackjack {
         }
     }
 
-    /** return -1 if busted hand */
+    /**
+     * return -1 if busted hand
+     */
     int handTotal(ArrayList<Integer> hand) {
         int aces = 0;
         int nonAcesTotal = 0;
