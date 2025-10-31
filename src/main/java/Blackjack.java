@@ -226,7 +226,9 @@ public class Blackjack {
             currCard++;
             card -= deckCardCounts[currCard];
         }
-        deckCardCounts[currCard] -= 1;
+
+        deckCardCounts[currCard]--;
+        cardsInDeck--;
 
         return currCard;
     }
