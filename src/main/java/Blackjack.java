@@ -80,12 +80,12 @@ public class Blackjack {
             do {
                 int temp;
 
-                display(false);
+                display(true);
                 IO.println("1 - HIT   2 - STAND");
 
                 int userIn = promptHitStand();
 
-                switch(userIn) {
+                switch (userIn) {
                     // hit
                     case 1:
                         playerHand.add(getRandomCard());
@@ -108,8 +108,7 @@ public class Blackjack {
                 }
             } while (playerTurn);
 
-            boolean showDealer = false;
-            display(showDealer);
+            display(false);
 
             int dealerTotal = handTotal(dealerHand);
 
@@ -155,8 +154,8 @@ public class Blackjack {
         return res.toString().trim();
     }
 
-    void display(boolean showDealer) {
-        String dealerStr = cardsToString(dealerHand, showDealer);
+    void display(boolean hideDealer) {
+        String dealerStr = cardsToString(dealerHand, hideDealer);
         String playerStr = cardsToString(playerHand, false);
 
         String res = String.format("""
@@ -207,7 +206,7 @@ public class Blackjack {
             try {
                 userIn = in.nextInt();
 
-            } catch(InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 System.err.println("Wrong input! Try again.");
                 in.nextLine();
                 continue;
